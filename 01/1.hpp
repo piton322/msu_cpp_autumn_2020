@@ -1,5 +1,4 @@
-#ifndef __1_HPP__
-#define __1_HPP__
+#pragma once
 #include <iostream>
 using namespace std;
 
@@ -18,4 +17,3 @@ public:
     void reset();
     ~Allocator();
 };
-#endif
