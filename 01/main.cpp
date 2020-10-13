@@ -108,15 +108,15 @@ void enterAfterReset()
     char * aSecond;
     aFirst = allocatorLast.alloc(sizeof(char)*4);
     aSecond = allocatorLast.alloc(sizeof(char)*4);
-	if ((aFirst != nullptr) and (aSecond != nullptr))
+    if ((aFirst != nullptr) and (aSecond != nullptr))
     {
         *aFirst = '1';
         *aSecond = '2';
     }
-	else
-	{
-		throw -1;
-	}
+    else
+    {
+	throw -1;
+    }
 }
 int main(int argc, char* argv[])
 {
