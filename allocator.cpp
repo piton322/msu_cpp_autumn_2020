@@ -61,10 +61,10 @@ char* Allocator::alloc(size_t size)
 void Allocator::reset()
 {
     if (flag)
-	{
-		//сбрасываем смещение на 0
+    {
+	//сбрасываем смещение на 0
         offset = 0;
-	}
+    }
 }
 
 
