@@ -120,7 +120,7 @@ string TokenParser::parse(const string & myText)
             }
         }
     }
-    // вызовы конечной функции, если она задана
+    // вызов конечной функции, если она задана
     if (endCallback != nullptr)
     {
         result += endCallback();
