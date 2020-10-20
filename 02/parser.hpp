@@ -1,10 +1,11 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <functional>
 using namespace std;
-using myPtr = string(*)();
-using digitPtr = string(*)(int); // число передадим по значению
-using strPtr = string(*)(const string &); // не будем изменять строку
+using myPtr = function<string ()>;
+using digitPtr = function<string (int)>; // число передадим по значению
+using strPtr = function<string (const string &)>; // не будем изменять строку
 
 
 class TokenParser
@@ -24,5 +25,6 @@ class TokenParser
         void setStartCallback(const myPtr & start);
         void setDigitCallback(const digitPtr & digit);
         void setStrCallback(const strPtr & str);
+        void strOrDigitCallback(bool intFlag, const string & s, string & result);
         void setEndCallback(const myPtr & end);
 };

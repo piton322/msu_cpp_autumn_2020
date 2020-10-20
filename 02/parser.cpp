@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 #include "parser.hpp"
 #include <ctype.h>
 #include <string>
@@ -55,6 +56,25 @@ void TokenParser::setStrCallback(const strPtr & str)
 }
 
 
+void TokenParser::strOrDigitCallback(bool intFlag, const string & s, string & result)
+{
+    if (intFlag)
+    {
+        if(digitCallback != nullptr) // вызов функций только если они заданы
+        {
+            result += digitCallback(stoi(s));
+        }
+    }
+    else
+    {
+        if(strCallback != nullptr)
+        {
+            result += strCallback(s);
+        }
+    }
+}
+
+
 string TokenParser::parse(const string & myText)
 {
     string result = "";
@@ -72,20 +92,7 @@ string TokenParser::parse(const string & myText)
         {
             if(!spaceFlag)
             {
-                if (intFlag)
-                {
-                    if(digitCallback != nullptr) // вызов функций только если они заданы
-                    {
-                        result += digitCallback(stoi(s));
-                    }
-                }
-                else
-                {
-                    if(strCallback != nullptr)
-                    {
-                        result += strCallback(s);
-                    }
-                }
+                strOrDigitCallback(intFlag, s, result);
             }
             s = "";
             intFlag = true;
@@ -105,20 +112,7 @@ string TokenParser::parse(const string & myText)
     // учитываем вывод последнего элемента, если в конце нет пробелов
     if (s != "")
     {
-        if(intFlag)
-        {
-            if(digitCallback != nullptr)
-            {
-                result += digitCallback(stoi(s));
-            }
-        }
-        else
-        {
-            if(strCallback != nullptr)
-            {
-                result += strCallback(s);
-            }
-        }
+        strOrDigitCallback(intFlag, s, result);
     }
     // вызов конечной функции, если она задана
     if (endCallback != nullptr)
