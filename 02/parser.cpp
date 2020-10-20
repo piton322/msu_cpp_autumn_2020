@@ -103,7 +103,7 @@ string TokenParser::parse(const string & myText)
         {
             spaceFlag = false;
             s += i;
-            if((i <= '0') || (i >= '9'))
+            if(!isdigit(i))
             {
                 intFlag = false;
             }
