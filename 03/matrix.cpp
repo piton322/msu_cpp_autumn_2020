@@ -18,7 +18,7 @@ Matrix::Matrix(const Matrix & mat): myCol(mat.getCol()), myRow(mat.getRow())
 }
 
 
-Matrix::Matrix(const size_t & row, const size_t & col): myCol(col), myRow(row)
+Matrix::Matrix(size_t row, size_t col): myCol(col), myRow(row)
 {
     myMat = new int * [row];
     for (auto i = 0; i < row; i++)
@@ -40,16 +40,23 @@ size_t Matrix::getRow() const
 }
 
 
-Arr Matrix::operator[](const size_t  & n) const
+Arr Matrix::operator[](size_t n)
 {
-    if (n < myRow)
-    {
-        return Arr(myMat[n], myCol);
-    }
-    else
+    if (n >= myRow)
     {
         throw out_of_range("Dimension error");
     }
+    return Arr(myMat[n], myCol);
+}
+
+
+const Arr Matrix::operator[](size_t n) const
+{
+    if (n >= myRow)
+    {
+        throw out_of_range("Dimension error");
+    }
+    return Arr(myMat[n], myCol);
 }
 
 
@@ -80,25 +87,37 @@ ostream & operator <<(ostream & myOut, const Matrix & mat)
 }
 
 
-Matrix Matrix::operator +(const Matrix & matSecond)
+Matrix Matrix::operator +(const Matrix & matSecond) const
 {
     if ((myCol != matSecond.getCol()) 
         || (myRow != matSecond.getRow()))
     {
         throw out_of_range("Different dimensions");
-    }
-    else
+    }    
+    Matrix matFirst = Matrix(myRow, myCol);
+    for (auto i = 0; i < myRow; i++)
     {
-        Matrix matFirst = Matrix(myRow, myCol);
-        for (auto i = 0; i < myRow; i++)
+        for(auto j = 0; j < myCol; j++)
         {
-            for(auto j = 0; j < myCol; j++)
-            {
-                matFirst[i][j] = myMat[i][j] + matSecond[i][j];
-            }
+            matFirst[i][j] = myMat[i][j] + matSecond[i][j];
         }
-        return matFirst;
     }
+    return matFirst;
+}
+
+
+Matrix & Matrix::operator =(const Matrix & matSecond)
+{
+    myCol = matSecond.getCol();
+    myRow = matSecond.getRow();
+    for (auto i = 0; i < myRow; i++)
+    {
+        for(auto j = 0; j < myCol; j++)
+        {
+            myMat[i][j] = matSecond[i][j];
+        }
+    }
+    return * this;
 }
 
 

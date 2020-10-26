@@ -121,6 +121,31 @@ void rangeTest()
         // ошибка при выходе за границу
     }
 }
+
+
+void copyTest()
+{
+    const size_t rows = 2;
+    const size_t cols = 4;
+    Matrix mCopy(rows, cols);
+    for (auto i = 0; i < mCopy.getRow(); i++)
+    {
+        for(auto j = 0; j < mCopy.getCol(); j++)
+        {
+            mCopy[i][j] = 1;
+        }
+    }
+    Matrix mLast = mCopy;
+    for (auto i = 0; i < mLast.getRow(); i++)
+    {
+        for(auto j = 0; j < mLast.getCol(); j++)
+        {
+            assert(mLast[i][j] == 1);
+        }
+    }
+}
+
+
 int main(int argc, char* argv[])
 {
     createAndGetTest();
@@ -129,6 +154,7 @@ int main(int argc, char* argv[])
     equalTest();
     sumTest();
     rangeTest();
+    copyTest();
     cout << "Succes!" << endl;
     return 0;
 }
