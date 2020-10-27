@@ -108,6 +108,7 @@ Matrix Matrix::operator +(const Matrix & matSecond) const
 
 Matrix & Matrix::operator =(const Matrix & matSecond)
 {
+    Matrix::~Matrix();
     myCol = matSecond.getCol();
     myRow = matSecond.getRow();
     for (auto i = 0; i < myRow; i++)
