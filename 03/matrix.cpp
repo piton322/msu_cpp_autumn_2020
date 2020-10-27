@@ -108,7 +108,11 @@ Matrix Matrix::operator +(const Matrix & matSecond) const
 
 Matrix & Matrix::operator =(const Matrix & matSecond)
 {
-    Matrix::~Matrix();
+    if ((myCol != matSecond.getCol()) 
+        || (myRow != matSecond.getRow()))
+    {
+        throw out_of_range("Different dimensions");
+    }
     myCol = matSecond.getCol();
     myRow = matSecond.getRow();
     for (auto i = 0; i < myRow; i++)
