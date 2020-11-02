@@ -6,7 +6,7 @@ all: prog
 test:
 	./prog
 
-prog: tests.o bigint.o arr.o
+prog: tests.o bigint.o
 	$(CC) tests.o bigint.o -o prog
 
 bigint.o: bigint.cpp
