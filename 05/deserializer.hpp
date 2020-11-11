@@ -45,7 +45,7 @@ private:
             return err;
         }
         //myIn >> Separator;
-        return process(args...);
+        return process(forward<ArgsT>(args)...);
     }
 
     template<class T>
@@ -55,7 +55,7 @@ private:
         {
             parameterFromStream(curParameter);
         }
-        catch(Error err)
+        catch(const Error & err)
         {
             return err;
         }

@@ -41,12 +41,12 @@ private:
         {
             parameterToStream(curParameter);
         }
-        catch(Error err)
+        catch(const Error & err)
         {
             return err;
         }
         myOut << Separator;
-        return process(args...);
+        return process(forward<ArgsT>(args)...);
     }
     template<class T>
     Error process(T && curParameter) // если дошли до последнего параметра
@@ -55,7 +55,7 @@ private:
         {
             parameterToStream(curParameter);
         }
-        catch(Error err)
+        catch(const Error & err)
         {
             return err;
         }

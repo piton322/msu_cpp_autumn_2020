@@ -30,7 +30,7 @@ void Deserializer::parameterFromStream(uint64_t & parameter)
     {
         parameter = stoull(text);
     }
-    catch(exception & e)
+    catch(const logic_error & e)
     {
         throw Error::CorruptedArchive;
     }
