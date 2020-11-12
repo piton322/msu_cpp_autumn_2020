@@ -18,7 +18,7 @@ public: // паблик секция из подсказки к домашней
     template <class ... ArgsT>
     Error operator()(ArgsT && ... args)
     {
-        return process(args ...);
+        return process(forward<ArgsT>(args)...);
     }
     
 private:
