@@ -74,6 +74,10 @@ string workWithFormat(const string & str, const T & first)
             res << i;
         }       
     }
+    if (flag)
+    {
+        throw Error::BracketsError;
+    }
     numberParameters++;
     return res.str();
 }

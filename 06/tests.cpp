@@ -85,6 +85,32 @@ void notNumberTest()
 }
 
 
+void extraTestFirst()
+{
+    try
+    {
+        auto text = format("{2}+{2} = {0}", 2, "one");
+    }
+    catch(const Error & err)
+    {
+        assert(err == Error::ParameterError);
+    }
+}
+
+
+void extraTestSecond()
+{
+    try
+    {
+        auto text = format("{1}+{1} = {0", 2, "one");
+    }
+    catch(const Error & err)
+    {
+        assert(err == Error::BracketsError);
+    }
+}
+
+
 int main()
 {
     defaultWorkTest();
@@ -94,6 +120,8 @@ int main()
     bracketsErrorTest();
     secBracketsErrorTest();
     notNumberTest();
+    extraTestFirst();
+    extraTestSecond();
     cout << "Success!" << endl;
     return 0;
 }
