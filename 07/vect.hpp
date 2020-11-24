@@ -39,7 +39,7 @@ public:
                                my_capacity(sec_vec.my_capacity)
     {
         my_pointer = my_allocator.allocate(my_capacity);
-        fiil(begin(), end(), sec_vec);
+        fill(begin(), end(), sec_vec);
     }
 
     ~Vect()
