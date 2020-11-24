@@ -35,11 +35,15 @@ public:
 
     Vect(): my_capacity(0), my_size(0), my_pointer(nullptr), my_allocator(){}
 
-    Vect(const Vect& sec_vec): my_size(sec_vec.my_size), 
-                               my_capacity(sec_vec.my_capacity)
+    Vect(const Vect& sec_vec): my_capacity(sec_vec.my_capacity),
+                               my_size(sec_vec.my_size),
+                               my_allocator()
     {
         my_pointer = my_allocator.allocate(my_capacity);
-        fill(begin(), end(), sec_vec);
+        for (auto i = 0; i < my_size; i++)
+        {
+            my_pointer[i] = sec_vec[i];
+        }
     }
 
     ~Vect()
@@ -68,7 +72,6 @@ public:
 
     const_reference operator[](size_t i) const
     {
-        cout << i << endl;
         if (i > my_size || i < 0)
         {
             throw Error::IndexError;
