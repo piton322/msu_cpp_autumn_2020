@@ -35,6 +35,8 @@ public:
 
     Vect(): my_capacity(0), my_size(0), my_pointer(nullptr), my_allocator(){}
 
+    // rule_of_five
+    // copy constructor
     Vect(const Vect& sec_vec): my_capacity(sec_vec.my_capacity),
                                my_size(sec_vec.my_size),
                                my_allocator()
@@ -46,6 +48,51 @@ public:
         }
     }
 
+    // move constructor
+    Vect(Vect&& sec_vec) noexcept: my_capacity(sec_vec.my_capacity),
+                                   my_size(sec_vec.my_size),
+                                   my_allocator()
+    {
+        my_pointer = my_allocator.allocate(my_capacity);
+        for (auto i = 0; i < my_size; i++)
+        {
+            my_pointer[i] = move(sec_vec[i]);
+        }
+        sec_vec.my_size = 0;
+        sec_vec.my_capacity = 0;
+    }
+
+    // copy assignment
+    Vect & operator=(const Vect & sec_vec) noexcept
+    {
+        this->~Vect();
+        my_size = sec_vec.size();
+        my_capacity = sec_vec.capacity();
+        my_pointer = my_allocator.allocate(my_capacity);
+        for (auto i = 0; i < my_size; i++)
+        {
+            my_pointer[i] = sec_vec[i];
+        }
+        return * this;
+    }
+
+    // move assignment
+    Vect & operator=(Vect && sec_vec)
+    {
+        this->~Vect();
+        my_size = sec_vec.size();
+        my_capacity = sec_vec.capacity();
+        my_pointer = my_allocator.allocate(my_capacity);
+        for (auto i = 0; i < my_size; i++)
+        {
+            my_pointer[i] = move(sec_vec[i]);
+        }
+        sec_vec.my_size = 0;
+        sec_vec.my_capacity = 0;
+        return * this;
+    }
+
+    //deallocate
     ~Vect()
     {
         my_size = 0;
@@ -107,9 +154,8 @@ public:
         ptr new_pointer = my_allocator.allocate(my_capacity);
         for (auto i = 0; i < my_size; i++)
         {
-            new_pointer[i] = my_pointer[i];
+            new_pointer[i] = move(my_pointer[i]);
         }
-        my_allocator.deallocate(my_pointer);
         my_pointer = new_pointer;
     }
 

@@ -101,6 +101,52 @@ void reserveTest()
     assert(vec.capacity() == temp + 10);
 }
 
+void fiveRuleTest()
+{
+    Vect<int> vec;
+    for (int i = 0; i < 5; i++)
+    {
+        vec.push_back(i);
+    }
+    Vect<int> vec_sec = vec; // copy constructor
+    assert(vec_sec.size() == vec.size());
+    assert(vec_sec.capacity() == vec.capacity());
+    for (int i = 0; i < 5; i++)
+    {
+        assert(vec[i] == vec_sec[i]);
+    }
+
+    Vect<int> vec_third = move(vec); // move constructor
+    assert(vec_sec.size() == vec_third.size());
+    assert(vec_sec.capacity() == vec_third.capacity());
+    for (int i = 0; i < 5; i++)
+    {
+        assert(vec_third[i] == vec_sec[i]);
+    }
+    assert(vec.size() == 0);
+    assert(vec.capacity() == 0);
+
+    Vect<int> vec_fourth;
+    vec_fourth = vec_sec; // copy assignment
+    assert(vec_sec.size() == vec_fourth.size());
+    assert(vec_sec.capacity() == vec_fourth.capacity());
+    for (int i = 0; i < 5; i++)
+    {
+        assert(vec_fourth[i] == vec_sec[i]);
+    }
+
+    Vect<int> vec_fifth;
+    vec_fifth = move(vec_fourth); // move assignment
+    assert(vec_sec.size() == vec_fifth.size());
+    assert(vec_sec.capacity() == vec_fifth.capacity());
+    for (int i = 0; i < 5; i++)
+    {
+        assert(vec_fifth[i] == vec_sec[i]);
+    }
+    assert(vec_fourth.size() == 0);
+    assert(vec_fourth.capacity() == 0);
+}
+
 int main(int argc, char* argv[])
 {
     pushPopSizeCapacityTest();
@@ -110,6 +156,7 @@ int main(int argc, char* argv[])
     rbeginAndRendTest();
     resizeTest();
     reserveTest();
+    fiveRuleTest();
     cout << "Success!" << endl;
     return 0;
 }
