@@ -17,7 +17,7 @@ public:
 
     void working_with_thread()
     {
-        while(my_flag == true)
+        while(my_flag)
         {
             unique_lock<mutex> lock(my_mutex);
             if (!my_queue.empty())
@@ -52,7 +52,7 @@ public:
             bind(forward<T>(func), forward<TArgs>(args)...)
         );
         unique_lock<mutex> lock(my_mutex);
-        my_queue.push([goal]()
+        my_queue.emplace([goal]()
         {
             (*goal)();
         });
