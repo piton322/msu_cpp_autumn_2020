@@ -4,6 +4,7 @@
 #include <functional>
 #include <thread>
 #include <future>
+#include <iostream>
 #include <condition_variable>
 #include "error.hpp"
 using namespace std;
@@ -29,7 +30,7 @@ public:
             }
             else
             {
-                for_queue.wait(lock);
+                for_queue.wait(lock, [this](){ return this->my_queue.empty(); });
             }
         }
     }
