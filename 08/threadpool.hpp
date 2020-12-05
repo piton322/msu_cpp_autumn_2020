@@ -17,7 +17,7 @@ public:
 
     void working_with_thread()
     {
-        while(my_flag)
+        while(my_flag == true)
         {
             unique_lock<mutex> lock(my_mutex);
             if (!my_queue.empty())
@@ -51,11 +51,11 @@ public:
         auto goal = make_shared<packaged_task<type_f()>>(
             bind(forward<T>(func), forward<TArgs>(args)...)
         );
-        my_queue.emplace([goal]()
+        unique_lock<mutex> lock(my_mutex);
+        my_queue.push([goal]()
         {
             (*goal)();
         });
-        unique_lock<mutex> lock(my_mutex);
         if (!my_flag)
         {
             throw Error::ThreadError;
