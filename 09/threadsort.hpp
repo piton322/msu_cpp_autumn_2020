@@ -75,7 +75,7 @@ void sort_file(const string & file_name, const string & out_file_name)
         {
             size_t mid = file_in.gcount() / (2 * my_size); // середина - половина от прочитанного
             size_t right = file_in.gcount() / my_size;
-            thread first_thread([& buf, mid]()
+            thread first_thread([buf, mid]()
             {
                 sort(buf, buf + mid);
             });
