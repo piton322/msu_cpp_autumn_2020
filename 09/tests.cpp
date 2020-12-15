@@ -1,38 +1,48 @@
 #include "threadsort.hpp"
 #include <iostream>
 #include "error.hpp"
+#define f_size 10000000
 
 
 void makeInput()
 {
     ofstream file("input.txt");
+    ofstream expected("expected.txt");
     if(!file)
-    {
+    {   
         throw Error::InputFileError;
     }
-    for(size_t i = 0; i < 100000; i++)
-    {
-        uint64_t number = rand() % 100000;
-        //cout << number << " ";
+
+    std::vector<uint64_t> test;
+    test.reserve(f_size);
+
+    for(size_t i = 0; i < f_size; i++)
+    {   
+        uint64_t number = rand() % f_size;
         file.write(reinterpret_cast<char*>(& number), sizeof(uint64_t));
-    }
-    //cout << endl;
-    file.close();
+        test.push_back(number);
+    }   
+
+    std::sort(test.begin(), test.end());
+    for (const auto& n: test)
+        expected << n << " ";
 }
 
 
 void outputTest()
 {
     ifstream f("output.txt");
-    f.seekg (0, f.end);
-	my_type size_out = f.tellg() / my_size;
-	f.seekg(0, f.beg);
-    my_type * mas = new my_type [size_out + 1];
-    for (int i = 0; i < size_out; i++)
+    ofstream actual("actual.txt"); // Файл в который сохраняю то, что есть в output.txt через пробел
+
+    my_type * mas = new my_type [f_size];
+    for (int i = 0; i < f_size; i++)
     {
-        f >> mas[i];
+        uint64_t number;
+        f >> number;
+        mas[i] = number;
+        actual << number << " ";
     }
-    assert(is_sorted(mas, mas + size_out) == 1);
+    assert(is_sorted(mas, mas + f_size) == 1);
 }
 
 

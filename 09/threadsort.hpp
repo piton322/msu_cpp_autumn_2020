@@ -17,7 +17,7 @@ using my_it = istream_iterator<my_type>;
 using my_pair = pair<my_it, my_it>;
 
 
-void merge(const string & out_file_name, vector<string> file_names)
+void merge(const string & out_file_name, const vector<string> & file_names)
 {
     ofstream file_out(out_file_name);
     if(!file_out)
@@ -62,8 +62,8 @@ void sort_file(const string & file_name, const string & out_file_name)
     auto * buf = new my_type[mem_block];
     temp += mem_block;
     int count = 1;
-    string first_txt = to_string(count++) + "f.txt";
-    string second_txt = to_string(count++) + "f.txt";
+    string first_txt;
+    string second_txt;
     while(!file_in.eof())
     {
         if (temp > memory)
@@ -71,10 +71,14 @@ void sort_file(const string & file_name, const string & out_file_name)
             throw Error::ErrorMemory;
         }
         file_in.read(reinterpret_cast<char*>(buf), mem_block);
-        if(file_in.gcount() / my_size > 0)
+        size_t right = file_in.gcount() / my_size;
+        size_t mid = right / 2;
+        if(right > 0)
         {
-            size_t mid = file_in.gcount() / (2 * my_size); // середина - половина от прочитанного
-            size_t right = file_in.gcount() / my_size;
+            first_txt = to_string(count++) + "f.txt";
+            file_names.push_back(first_txt);
+            second_txt = to_string(count++) + "f.txt";
+            file_names.push_back(second_txt);
             thread first_thread([buf, mid]()
             {
                 sort(buf, buf + mid);
@@ -96,14 +100,12 @@ void sort_file(const string & file_name, const string & out_file_name)
             {
                 out_first << buf[i] << " ";
             }
-            for (size_t i = mid; i < file_in.gcount() / my_size; i++)
+            for (size_t i = mid; i < right; i++)
             {
                 out_second << buf[i] << " ";
             }
             out_first.close();
             out_second.close();
-            file_names.push_back(first_txt);
-            file_names.push_back(second_txt);
         }
     }
     file_in.close();
